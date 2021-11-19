@@ -12,6 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace A6
 {
@@ -20,6 +25,7 @@ namespace A6
     /// </summary>
     public partial class MainWindow : Window
     {
+        MqttClient mqttClient;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +37,20 @@ namespace A6
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+                    mqttClient = new MqttClient("127.0.0.1");
+                    mqttClient.MqttMsgPublishReceived += publisher;
+                    mqttClient.Subscribe(new string[] { "Application2/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+                    mqttClient.Connect("Application1");           
+        }
+
+        private void publisher(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
+        {
+            var message = Encoding.UTF8.GetString(e.Message);
+            recieveBox.Text = recieveBox.Text + message.ToString();
+        }
+
+        private void recieveBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
