@@ -24,5 +24,15 @@ namespace A6
         {
             InitializeComponent();
         }
+
+        private void sendButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
