@@ -42,7 +42,7 @@ namespace A6
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-                    mqttClient = new MqttClient("127.0.0.1");
+                    mqttClient = new MqttClient("192.168.0.226");
                     mqttClient.MqttMsgPublishReceived += publisher;
                     mqttClient.Subscribe(new string[] { "Application1/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
                     mqttClient.Connect("Application1");           
