@@ -30,22 +30,30 @@ namespace A6Two
         public MainWindow()
         {
             InitializeComponent();
+           
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (mqttClient.IsConnected)
+            Task.Run(() =>
             {
-                mqttClient.Publish("Application1/Message", Encoding.UTF8.GetBytes(message));
-            }
+                if (mqttClient.IsConnected)
+                {
+                    mqttClient.Publish("Application1/Message", Encoding.UTF8.GetBytes(message));
+                }
+            });
         }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            mqttClient = new MqttClient("192.168.0.226");
-            mqttClient.MqttMsgPublishReceived += publisher;
-            mqttClient.Subscribe(new string[] { "Application2/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-            mqttClient.Connect("Application2");
+            Task.Run(() =>
+            {
+                mqttClient = new MqttClient("127.0.0.1");
+                mqttClient.MqttMsgPublishReceived += publisher;
+                mqttClient.Subscribe(new string[] { "Application2/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+                mqttClient.Connect("Application2");
+            });
         }
 
         private void publisher(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
