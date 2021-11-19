@@ -26,7 +26,7 @@ namespace A6Two
     public partial class MainWindow : Window
     {
         MqttClient mqttClient;
-        public string message;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -35,34 +35,44 @@ namespace A6Two
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            Task.Run(() =>
+
+            if (mqttClient.IsConnected)
             {
-                if (mqttClient.IsConnected)
-                {
-                    mqttClient.Publish("Application1/Message", Encoding.UTF8.GetBytes(message));
-                }
-            });
+                mqttClient.Publish("Application1/Message", Encoding.UTF8.GetBytes(userI.Text));
+            }
+
         }
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Task.Run(() =>
-            {
-                mqttClient = new MqttClient("127.0.0.1");
-                mqttClient.MqttMsgPublishReceived += publisher;
-                mqttClient.Subscribe(new string[] { "Application2/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-                mqttClient.Connect("Application2");
-            });
+            mqttClient = new MqttClient("127.0.0.1");
+            mqttClient.MqttMsgPublishReceived += publisher;
+            mqttClient.Subscribe(new string[] { "Application2/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            mqttClient.Connect("Application2");
         }
 
         private void publisher(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
         {
-            message = Encoding.UTF8.GetString(e.Message);
-            recieveBox.Text = recieveBox.Text + message.ToString();
+            this.Dispatcher.Invoke(() =>
+            {
+                var message = Encoding.UTF8.GetString(e.Message);
+                recieveBox.Items.Add(message);
+            });
+            
         }
 
         private void recieveBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void userI_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void recieveBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
