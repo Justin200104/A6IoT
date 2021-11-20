@@ -34,12 +34,12 @@ namespace A6
             
         }
 
-        private void sendButton_Click(object sender, RoutedEventArgs e)
+        private void SendButton_Click(object sender, RoutedEventArgs e)
         {
 
             if (mqttClient.IsConnected)
             {
-                mqttClient.Publish("Application2/Message", Encoding.UTF8.GetBytes(userI.Text));
+                mqttClient.Publish("test/client", Encoding.UTF8.GetBytes(userI.Text));
             }
 
         }
@@ -47,12 +47,12 @@ namespace A6
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             mqttClient = new MqttClient("127.0.0.1");
-            mqttClient.MqttMsgPublishReceived += publisher;
-            mqttClient.Subscribe(new string[] { "Application1/Message" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            mqttClient.MqttMsgPublishReceived += Publisher;
+            mqttClient.Subscribe(new string[] { "test/client" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
             mqttClient.Connect("Application1");
         }
 
-        private void publisher(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
+        private void Publisher(object sender, MqttMsgPublishEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
             {
@@ -61,14 +61,6 @@ namespace A6
             });
         }
 
-        private void recieveBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
-
-        private void recieveBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

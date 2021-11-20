@@ -8,10 +8,10 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TextBox HorizontalAlignment="Left" Name="userI" Margin="30,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="528" Height="40"/>
-        <Button Content="Send" x:Name="sendButton" IsEnabled="True" HorizontalAlignment="Left" Margin="30,277,0,0" VerticalAlignment="Top" Height="87" Width="150" Click="sendButton_Click"/>
+        <Button Content="Send" x:Name="sendButton" IsEnabled="True" HorizontalAlignment="Left" Margin="30,277,0,0" VerticalAlignment="Top" Height="87" Width="150" Click="SendButton_Click"/>
         <TextBox HorizontalAlignment="Left" Margin="203,277,0,0" Text="2nd User IP" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Content="Connect" HorizontalAlignment="Left" Margin="360,271,0,0" VerticalAlignment="Top" Height="24" Width="112" Click="Button_Click"/>
-        <ListBox HorizontalAlignment="Left" x:Name="recieveBox" Margin="30,95,0,0" VerticalAlignment="Top" Width="528" Height="141" SelectionChanged="recieveBox_SelectionChanged" />
+        <ListBox HorizontalAlignment="Left" x:Name="recieveBox" Margin="30,95,0,0" VerticalAlignment="Top" Width="528" Height="141"/>
 
     </Grid>
 </Window>
