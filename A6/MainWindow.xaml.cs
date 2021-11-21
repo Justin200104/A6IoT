@@ -1,30 +1,14 @@
 ﻿/*
 File: MainWindow.xaml.cs
 Project: A6
-Programmers: Justin Langevin, Josiah Rehkopf, Nikola Ristic, Jesse R...
+Programmers: Justin Langevin, Josiah Rehkopf, Nikola Ristic, Jesse Rutledge
 First Version: 2021 - 11- 15
 Description: This is a test mqtt client for the assignment 6 project for IoT
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
-
 
 namespace A6
 {
@@ -39,7 +23,7 @@ namespace A6
         public MainWindow()
         {
             InitializeComponent();
-            
+
         }
 
         /* -------------------------------------------------------------------------------------------
@@ -80,13 +64,12 @@ namespace A6
         * ------------------------------------------------------------------------------------------*/
         private void Publisher(object sender, MqttMsgPublishEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 var message = Encoding.UTF8.GetString(e.Message);
                 recieveBox.Items.Add(message);
             });
         }
-
 
     }
 }
