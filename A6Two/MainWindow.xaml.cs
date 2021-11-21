@@ -7,6 +7,7 @@ Description: This is a test mqtt client for the assignment 6 project for IoT
 */
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
@@ -19,27 +20,12 @@ namespace A6Two
     public partial class MainWindow : Window
     {
         MqttClient mqttClient;
-        //public string message;
+        bool connected = false;
+
         public MainWindow()
         {
             InitializeComponent();
-           
-        }
-
-        /* -------------------------------------------------------------------------------------------
-        * Method	        :	SendButton_Click()
-        * Description	    :	This Method is used to publish the clients message.					
-        * Parameters	    :	object sender, routedEventArgs e
-        * Returns		    :	void
-        * ------------------------------------------------------------------------------------------*/
-        private void SendButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            if (mqttClient.IsConnected)
-            {
-                mqttClient.Publish("test/client", Encoding.UTF8.GetBytes(userI.Text));
-            }
-
+            userI.Focus();
         }
 
         /* -------------------------------------------------------------------------------------------
@@ -50,9 +36,9 @@ namespace A6Two
         * ------------------------------------------------------------------------------------------*/
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            mqttClient = new MqttClient("127.0.0.1");
+            mqttClient = new MqttClient("test.mosquitto.org");
             mqttClient.MqttMsgPublishReceived += Publisher;
-            mqttClient.Subscribe(new string[] { "test/client" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            mqttClient.Subscribe(new string[] { "test/topic" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
             mqttClient.Connect("Application2");
         }
 
@@ -72,5 +58,22 @@ namespace A6Two
             
         }
 
+        /* -------------------------------------------------------------------------------------------
+        * Method	        :	UserI_KeyDown()
+        * Description	    :	This Method is called when the user pushes the enter key to publish the message to the mqtt topic			
+        * Parameters	    :	object sender, KeyEventArgs e
+        * Returns		    :	void
+        * ------------------------------------------------------------------------------------------*/
+        private void UserI_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (connected)
+                {
+                    mqttClient.Publish("test/topic", Encoding.UTF8.GetBytes(userI.Text));
+                    userI.Text = string.Empty;
+                }
+            }
+        }
     }
 }
